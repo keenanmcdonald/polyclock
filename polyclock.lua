@@ -3,13 +3,14 @@
 local ratios = {4, 4, 4, 4}
 local outputIsOn = {false, false, false, false}
 local metros = {}
-local master = .8
 local ratioSelect = 1
 
 function init()
+  params:add{type = "number", id = "masterBPM", name = "MasterBPM", min=1, max=200, default=60, action=function() updateMetros() end}
+
   for i = 1, 4 do
     metros[i] = metro.init()
-    metros[i].time = (master / ratios[i]*2)
+    metros[i].time = ((60/params:get('masterBPM'))/ ratios[i]*2)
     metros[i].event = function() step(i) end
     metros[i]:start()
   end
@@ -38,7 +39,7 @@ end
 
 function updateMetros()
   for i = 1, 4 do
-    metros[i].time = (master / ratios[i]*2)
+    metros[i].time = ((60/params:get('masterBPM')) / ratios[i]*2)
   end
 end
 
